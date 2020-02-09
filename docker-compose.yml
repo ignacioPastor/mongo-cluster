@@ -1,0 +1,38 @@
+version: "3.5"
+services:
+
+  comp-mongo-node1:
+    container_name: comp-mongo-node1
+    hostname: comp-mongo-node1
+    image: mongo
+    command: mongod --replSet 'rs1'
+    volumes:
+      - ./init_rs.sh:/init_rs.sh
+    # command: ./init_rs.sh
+    # command:
+    #   - mongod --replSet 'rs1'
+    # entrypoint: /init_rs.sh
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    networks:
+      - comp-mongo-cluster
+  comp-mongo-node2:
+    container_name: comp-mongo-node2
+    hostname: comp-mongo-node2
+    image: mongo
+    command: mongod --replSet 'rs1'
+    networks:
+      - comp-mongo-cluster
+  comp-mongo-node3:
+    container_name: comp-mongo-node3
+    hostname: comp-mongo-node3
+    image: mongo
+    command: mongod --replSet 'rs1'
+    networks:
+      - comp-mongo-cluster
+
+networks:
+  comp-mongo-cluster:
+    name: comp-mongo-cluster
+    driver: bridge
